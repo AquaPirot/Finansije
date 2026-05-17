@@ -30,11 +30,52 @@
       gap: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
-
     header h1 { font-size: 1.4rem; font-weight: 600; }
     header img { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; }
 
-    .container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+    /* TABS */
+    .tabs {
+      background: white;
+      display: flex;
+      border-bottom: 2px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 14px 8px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #718096;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .tab-btn.active { color: #2b6cb0; border-bottom-color: #2b6cb0; }
+    .tab-btn .badge-count {
+      background: #e53e3e;
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
 
     /* KURS BAR */
     .kurs-bar {
@@ -48,9 +89,7 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-
     .kurs-bar label { font-size: 0.83rem; font-weight: 600; color: #2b6cb0; white-space: nowrap; }
-
     .kurs-bar input {
       width: 90px;
       padding: 5px 9px;
@@ -63,7 +102,6 @@
       color: #2b6cb0;
       background: white;
     }
-
     .kurs-bar input:focus { border-color: #2b6cb0; }
     .kurs-hint { font-size: 0.78rem; color: #718096; margin-left: auto; }
 
@@ -73,9 +111,8 @@
       border-radius: 12px;
       padding: 20px;
       box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-
     .form-card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #4a5568; }
 
     .type-toggle {
@@ -85,26 +122,22 @@
       border: 2px solid #e2e8f0;
       margin-bottom: 14px;
     }
-
     .type-toggle button {
       flex: 1;
       padding: 10px;
       border: none;
       background: white;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 500;
       transition: background 0.2s, color 0.2s;
     }
-
     .type-toggle button.active-placanje { background: #e53e3e; color: white; }
     .type-toggle button.active-naplata  { background: #38a169; color: white; }
+    .type-toggle button.active-ja       { background: #e53e3e; color: white; }
+    .type-toggle button.active-meni     { background: #38a169; color: white; }
 
-    .form-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .form-group {
       display: flex;
@@ -113,9 +146,7 @@
       flex: 1;
       min-width: 140px;
     }
-
     .form-group label { font-size: 0.82rem; font-weight: 600; color: #718096; }
-
     .form-group input, .form-group textarea, .form-group select {
       padding: 9px 12px;
       border: 1.5px solid #e2e8f0;
@@ -125,25 +156,17 @@
       transition: border-color 0.2s;
       font-family: inherit;
     }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #2b6cb0; }
+    .form-group textarea { resize: vertical; min-height: 56px; }
 
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      border-color: #2b6cb0;
-    }
-
-    .form-group textarea { resize: vertical; min-height: 60px; }
-
-    /* iznos + valuta zajedno */
     .iznos-wrap {
       display: flex;
-      gap: 0;
       border: 1.5px solid #e2e8f0;
       border-radius: 8px;
       overflow: hidden;
       transition: border-color 0.2s;
     }
-
     .iznos-wrap:focus-within { border-color: #2b6cb0; }
-
     .iznos-wrap input {
       border: none;
       border-radius: 0;
@@ -154,13 +177,11 @@
       font-size: 0.95rem;
       font-family: inherit;
     }
-
     .valuta-toggle {
       display: flex;
       border-left: 1.5px solid #e2e8f0;
       flex-shrink: 0;
     }
-
     .valuta-toggle button {
       padding: 0 12px;
       border: none;
@@ -171,9 +192,7 @@
       color: #718096;
       transition: background 0.15s, color 0.15s;
     }
-
     .valuta-toggle button:first-child { border-right: 1px solid #e2e8f0; }
-
     .valuta-toggle button.active-rsd { background: #2b6cb0; color: white; }
     .valuta-toggle button.active-eur { background: #d69e2e; color: white; }
 
@@ -190,38 +209,36 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-
     .btn-add:hover { background: #2c5282; }
 
     /* SUMMARY */
-    .summary {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
+    .summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
     .summary-card {
       flex: 1;
-      min-width: 140px;
+      min-width: 130px;
       background: white;
       border-radius: 10px;
       padding: 14px 16px;
       box-shadow: 0 1px 6px rgba(0,0,0,0.08);
       border-left: 4px solid #cbd5e0;
     }
-
     .summary-card.naplata  { border-left-color: #38a169; }
     .summary-card.placanje { border-left-color: #e53e3e; }
     .summary-card.neuneto  { border-left-color: #d69e2e; }
+    .summary-card.meni-dug { border-left-color: #38a169; }
+    .summary-card.ja-dug   { border-left-color: #e53e3e; }
+    .summary-card.aktivni  { border-left-color: #805ad5; }
 
     .summary-card .label  { font-size: 0.78rem; font-weight: 600; color: #718096; margin-bottom: 4px; }
-    .summary-card .amount { font-size: 1.25rem; font-weight: 700; }
+    .summary-card .amount { font-size: 1.2rem; font-weight: 700; }
     .summary-card .sub    { font-size: 0.74rem; color: #a0aec0; margin-top: 3px; }
 
     .summary-card.naplata  .amount { color: #276749; }
     .summary-card.placanje .amount { color: #c53030; }
     .summary-card.neuneto  .amount { color: #b7791f; }
+    .summary-card.meni-dug .amount { color: #276749; }
+    .summary-card.ja-dug   .amount { color: #c53030; }
+    .summary-card.aktivni  .amount { color: #553c9a; }
 
     /* FILTER */
     .filter-bar {
@@ -231,8 +248,7 @@
       flex-wrap: wrap;
       align-items: center;
     }
-
-    .filter-bar select, .filter-bar input {
+    .filter-bar select {
       padding: 7px 10px;
       border: 1.5px solid #e2e8f0;
       border-radius: 8px;
@@ -240,20 +256,17 @@
       outline: none;
       background: white;
     }
-
     .filter-bar select:focus { border-color: #2b6cb0; }
     .filter-label { font-size: 0.82rem; color: #718096; font-weight: 600; }
 
-    /* TRANSACTIONS */
-    .transactions-header {
+    /* LIST HEADER */
+    .list-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
     }
-
-    .transactions-header h2 { font-size: 1rem; font-weight: 600; color: #4a5568; }
-
+    .list-header h2 { font-size: 1rem; font-weight: 600; color: #4a5568; }
     .btn-export {
       padding: 6px 14px;
       background: #e2e8f0;
@@ -264,9 +277,9 @@
       cursor: pointer;
       font-weight: 600;
     }
-
     .btn-export:hover { background: #cbd5e0; }
 
+    /* ITEMS */
     .empty-state {
       text-align: center;
       padding: 40px 20px;
@@ -275,11 +288,9 @@
       border-radius: 10px;
       box-shadow: 0 1px 6px rgba(0,0,0,0.08);
     }
-
     .empty-state .icon { font-size: 2.5rem; margin-bottom: 10px; }
-    .empty-state p { font-size: 0.95rem; }
 
-    .transaction-item {
+    .item-card {
       background: white;
       border-radius: 10px;
       padding: 14px 16px;
@@ -291,60 +302,38 @@
       border-left: 4px solid #cbd5e0;
       transition: opacity 0.2s;
     }
+    .item-card.naplata    { border-left-color: #38a169; }
+    .item-card.placanje   { border-left-color: #e53e3e; }
+    .item-card.meni-duguje { border-left-color: #38a169; }
+    .item-card.ja-dugujem  { border-left-color: #e53e3e; }
+    .item-card.zavrseno   { opacity: 0.5; }
 
-    .transaction-item.naplata  { border-left-color: #38a169; }
-    .transaction-item.placanje { border-left-color: #e53e3e; }
-    .transaction-item.uneto    { opacity: 0.52; }
-
-    .transaction-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
-
-    .transaction-body { flex: 1; min-width: 0; }
-
-    .transaction-top {
+    .item-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .item-body { flex: 1; min-width: 0; }
+    .item-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 8px;
     }
-
-    .transaction-opis {
-      font-weight: 600;
-      font-size: 0.97rem;
-      word-break: break-word;
-    }
-
+    .item-name { font-weight: 600; font-size: 0.97rem; word-break: break-word; }
     .amount-block { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
+    .item-amount { font-size: 1.1rem; font-weight: 700; white-space: nowrap; }
+    .item-amount-sub { font-size: 0.75rem; color: #a0aec0; white-space: nowrap; }
 
-    .transaction-amount {
-      font-size: 1.1rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
+    .meni-duguje .item-amount { color: #276749; }
+    .ja-dugujem  .item-amount { color: #c53030; }
+    .naplata     .item-amount { color: #276749; }
+    .placanje    .item-amount { color: #c53030; }
 
-    .transaction-amount-eur {
-      font-size: 0.75rem;
-      color: #a0aec0;
-      white-space: nowrap;
-    }
-
-    .naplata  .transaction-amount { color: #276749; }
-    .placanje .transaction-amount { color: #c53030; }
-
-    .transaction-meta {
+    .item-meta {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       margin-top: 5px;
       align-items: center;
     }
-
-    .meta-tag {
-      font-size: 0.75rem;
-      color: #718096;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
+    .meta-tag { font-size: 0.75rem; color: #718096; display: flex; align-items: center; gap: 3px; }
 
     .badge {
       display: inline-block;
@@ -353,21 +342,23 @@
       font-size: 0.72rem;
       font-weight: 600;
     }
+    .badge-neuneto  { background: #fefcbf; color: #b7791f; }
+    .badge-uneto    { background: #c6f6d5; color: #276749; }
+    .badge-rsd      { background: #ebf4ff; color: #2b6cb0; }
+    .badge-eur      { background: #fefcbf; color: #975a16; }
+    .badge-ja       { background: #fff5f5; color: #c53030; }
+    .badge-meni     { background: #f0fff4; color: #276749; }
+    .badge-placeno  { background: #c6f6d5; color: #276749; }
+    .badge-aktivan  { background: #fefcbf; color: #b7791f; }
 
-    .badge-neuneto { background: #fefcbf; color: #b7791f; }
-    .badge-uneto   { background: #c6f6d5; color: #276749; }
-    .badge-rsd     { background: #ebf4ff; color: #2b6cb0; }
-    .badge-eur     { background: #fefcbf; color: #975a16; }
-
-    .transaction-actions {
+    .item-actions {
       display: flex;
       gap: 6px;
       flex-shrink: 0;
       flex-direction: column;
       align-items: flex-end;
     }
-
-    .btn-uneto {
+    .btn-primary {
       padding: 4px 10px;
       border: 1.5px solid #38a169;
       background: white;
@@ -379,10 +370,7 @@
       white-space: nowrap;
       transition: background 0.2s, color 0.2s;
     }
-
-    .btn-uneto:hover { background: #38a169; color: white; }
-    .btn-uneto.active { background: #38a169; color: white; }
-
+    .btn-primary:hover, .btn-primary.active { background: #38a169; color: white; }
     .btn-delete {
       padding: 4px 8px;
       border: 1.5px solid #e2e8f0;
@@ -393,7 +381,6 @@
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s;
     }
-
     .btn-delete:hover { border-color: #e53e3e; color: #e53e3e; }
 
     /* TOAST */
@@ -412,7 +399,6 @@
       transition: transform 0.3s, opacity 0.3s;
       z-index: 999;
     }
-
     .toast.show { transform: translateY(0); opacity: 1; }
 
     @media (max-width: 480px) {
@@ -428,32 +414,41 @@
   <h1>Beleška Transakcija</h1>
 </header>
 
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('transakcije')">
+    💰 Transakcije
+  </button>
+  <button class="tab-btn" id="tab-dugovi-btn" onclick="switchTab('dugovi')">
+    🤝 Dugovi
+    <span class="badge-count" id="dug-count" style="display:none">0</span>
+  </button>
+</div>
+
+<!-- ===== TAB: TRANSAKCIJE ===== -->
+<div class="tab-content active" id="tab-transakcije">
 <div class="container">
 
-  <!-- KURS -->
   <div class="kurs-bar">
     <label>Kurs: 1 EUR =</label>
     <input type="number" id="kurs" min="1" step="0.01" value="117" oninput="sacuvajKurs()" />
     <label>RSD</label>
-    <span class="kurs-hint">Koristi se za konverziju u saldo (EUR)</span>
+    <span class="kurs-hint">Za konverziju u EUR</span>
   </div>
 
-  <!-- FORMA -->
   <div class="form-card">
     <h2>Nova transakcija</h2>
-
     <div class="type-toggle">
       <button id="btn-placanje" class="active-placanje" onclick="setType('placanje')">⬆ Plaćanje</button>
       <button id="btn-naplata" onclick="setType('naplata')">⬇ Naplata od kupca</button>
     </div>
-
     <div class="form-row">
-      <div class="form-group" style="flex: 2; min-width: 200px;">
+      <div class="form-group" style="flex:2; min-width:200px;">
         <label>Opis</label>
         <textarea id="opis" placeholder="Šta je plaćeno / od koga naplaćeno..."></textarea>
       </div>
       <div class="form-group">
-        <label id="iznos-label">Iznos</label>
+        <label>Iznos</label>
         <div class="iznos-wrap">
           <input type="number" id="iznos" placeholder="0.00" min="0" step="0.01" />
           <div class="valuta-toggle">
@@ -463,8 +458,7 @@
         </div>
       </div>
     </div>
-
-    <div class="form-row" style="margin-top: 10px;">
+    <div class="form-row" style="margin-top:10px;">
       <div class="form-group">
         <label>Datum i vreme</label>
         <input type="datetime-local" id="datum" />
@@ -474,11 +468,9 @@
         <input type="text" id="napomena" placeholder="Dodatna napomena..." />
       </div>
     </div>
-
     <button class="btn-add" onclick="dodajTransakciju()">+ Dodaj transakciju</button>
   </div>
 
-  <!-- SUMARNI PRIKAZ -->
   <div class="summary">
     <div class="summary-card naplata">
       <div class="label">Ukupno naplaćeno</div>
@@ -497,7 +489,6 @@
     </div>
   </div>
 
-  <!-- FILTER -->
   <div class="filter-bar">
     <span class="filter-label">Filter:</span>
     <select id="filter-tip" onchange="renderTransakcije()">
@@ -517,47 +508,156 @@
     </select>
   </div>
 
-  <!-- LISTA -->
-  <div class="transactions-header">
+  <div class="list-header">
     <h2 id="transactions-title">Transakcije</h2>
     <button class="btn-export" onclick="exportCSV()">Izvezi CSV</button>
   </div>
-
   <div id="lista"></div>
 
+</div>
+</div>
+
+<!-- ===== TAB: DUGOVI ===== -->
+<div class="tab-content" id="tab-dugovi">
+<div class="container">
+
+  <div class="form-card">
+    <h2>Novi dug</h2>
+    <div class="type-toggle">
+      <button id="btn-ja" class="active-ja" onclick="setSmer('ja_dugujem')">⬆ Ja dugujem</button>
+      <button id="btn-meni" onclick="setSmer('meni_duguju')">⬇ Meni duguju</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="flex:2; min-width:180px;">
+        <label id="lbl-ime">Kome dugujem</label>
+        <input type="text" id="dug-ime" placeholder="Ime osobe..." />
+      </div>
+      <div class="form-group">
+        <label>Iznos</label>
+        <div class="iznos-wrap">
+          <input type="number" id="dug-iznos" placeholder="0.00" min="0" step="0.01" />
+          <div class="valuta-toggle">
+            <button id="btn-dug-rsd" class="active-rsd" onclick="setDugValuta('RSD')">RSD</button>
+            <button id="btn-dug-eur" onclick="setDugValuta('EUR')">EUR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row" style="margin-top:10px;">
+      <div class="form-group">
+        <label>Napomena (opciono)</label>
+        <input type="text" id="dug-napomena" placeholder="Za šta, kada, dogovor..." />
+      </div>
+    </div>
+    <button class="btn-add" onclick="dodajDug()">+ Dodaj dug</button>
+  </div>
+
+  <div class="summary">
+    <div class="summary-card ja-dug">
+      <div class="label">Ja dugujem ukupno</div>
+      <div class="amount" id="sum-ja-dug">0,00 €</div>
+      <div class="sub" id="sum-ja-dug-sub"></div>
+    </div>
+    <div class="summary-card meni-dug">
+      <div class="label">Meni duguju ukupno</div>
+      <div class="amount" id="sum-meni-dug">0,00 €</div>
+      <div class="sub" id="sum-meni-dug-sub"></div>
+    </div>
+    <div class="summary-card aktivni">
+      <div class="label">Aktivnih dugova</div>
+      <div class="amount" id="sum-aktivni">0</div>
+      <div class="sub" id="sum-aktivni-sub"></div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <select id="filter-dug-smer" onchange="renderDugovi()">
+      <option value="sve">Svi dugovi</option>
+      <option value="ja_dugujem">Ja dugujem</option>
+      <option value="meni_duguju">Meni duguju</option>
+    </select>
+    <select id="filter-dug-status" onchange="renderDugovi()">
+      <option value="aktivni">Samo aktivni</option>
+      <option value="sve">Svi (+ plaćeni)</option>
+      <option value="placeni">Samo plaćeni</option>
+    </select>
+  </div>
+
+  <div class="list-header">
+    <h2 id="dugovi-title">Dugovi</h2>
+  </div>
+  <div id="lista-dugovi"></div>
+
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
   const STORAGE_KEY      = 'finansije_transakcije';
+  const STORAGE_DUG_KEY  = 'finansije_dugovi';
   const STORAGE_KURS_KEY = 'finansije_kurs';
 
-  let tip    = 'placanje';
-  let valuta = 'RSD';
-  let transakcije = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  let tip        = 'placanje';
+  let valuta     = 'RSD';
+  let smer       = 'ja_dugujem';
+  let dugValuta  = 'RSD';
+  let aktTab     = 'transakcije';
 
-  // Učitaj sačuvani kurs
+  let transakcije = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  let dugovi      = JSON.parse(localStorage.getItem(STORAGE_DUG_KEY) || '[]');
+
   const savedKurs = parseFloat(localStorage.getItem(STORAGE_KURS_KEY));
   if (savedKurs && savedKurs > 0) document.getElementById('kurs').value = savedKurs;
 
-  function getKurs() {
-    return parseFloat(document.getElementById('kurs').value) || 117;
-  }
+  document.getElementById('datum').value = sada();
+
+  // ---- HELPERS ----
+  function getKurs() { return parseFloat(document.getElementById('kurs').value) || 117; }
 
   function sacuvajKurs() {
     localStorage.setItem(STORAGE_KURS_KEY, document.getElementById('kurs').value);
     renderTransakcije();
+    renderDugovi();
   }
 
-  function toEUR(iznos, v) {
-    return v === 'EUR' ? iznos : iznos / getKurs();
+  function toEUR(iznos, v) { return v === 'EUR' ? iznos : iznos / getKurs(); }
+
+  function fmtEUR(n) { return n.toLocaleString('sr-RS', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €'; }
+  function fmtRSD(n) { return n.toLocaleString('sr-RS', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' RSD'; }
+  function fmtIznos(iznos, v) { return v === 'EUR' ? fmtEUR(iznos) : fmtRSD(iznos); }
+
+  function sada() {
+    const d = new Date(), pad = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
-  function toRSD(iznos, v) {
-    return v === 'RSD' ? iznos : iznos * getKurs();
+  function formatDatum(iso) {
+    const d = new Date(iso), pad = n => String(n).padStart(2,'0');
+    return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ---- TABS ----
+  function switchTab(name) {
+    aktTab = name;
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', ['transakcije','dugovi'][i] === name));
+    document.getElementById('tab-transakcije').classList.toggle('active', name === 'transakcije');
+    document.getElementById('tab-dugovi').classList.toggle('active', name === 'dugovi');
+  }
+
+  // ---- TRANSAKCIJE ----
   function setType(t) {
     tip = t;
     document.getElementById('btn-placanje').className = t === 'placanje' ? 'active-placanje' : '';
@@ -570,42 +670,7 @@
     document.getElementById('btn-eur').className = v === 'EUR' ? 'active-eur' : '';
   }
 
-  function sada() {
-    const d = new Date();
-    const pad = n => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-
-  document.getElementById('datum').value = sada();
-
-  function fmtEUR(n) {
-    return n.toLocaleString('sr-RS', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-  }
-
-  function fmtRSD(n) {
-    return n.toLocaleString('sr-RS', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' RSD';
-  }
-
-  function fmtIznos(iznos, v) {
-    return v === 'EUR' ? fmtEUR(iznos) : fmtRSD(iznos);
-  }
-
-  function formatDatum(iso) {
-    const d = new Date(iso);
-    const pad = n => String(n).padStart(2, '0');
-    return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
-
-  function sacuvaj() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(transakcije));
-  }
+  function sacuvajTransakcije() { localStorage.setItem(STORAGE_KEY, JSON.stringify(transakcije)); }
 
   function dodajTransakciju() {
     const opis     = document.getElementById('opis').value.trim();
@@ -614,12 +679,11 @@
     const napomena = document.getElementById('napomena').value.trim();
 
     if (!opis)              { showToast('Unesite opis transakcije.'); return; }
-    if (!iznos || iznos <= 0) { showToast('Unesite ispravan iznos.'); return; }
+    if (!iznos || iznos<=0) { showToast('Unesite ispravan iznos.'); return; }
     if (!datum)             { showToast('Unesite datum i vreme.'); return; }
 
-    transakcije.unshift({ id: Date.now(), tip, opis, iznos, valuta, datum, napomena, uneto: false });
-
-    sacuvaj();
+    transakcije.unshift({id: Date.now(), tip, opis, iznos, valuta, datum, napomena, uneto: false});
+    sacuvajTransakcije();
     renderTransakcije();
     showToast(tip === 'placanje' ? 'Plaćanje zabeleženo!' : 'Naplata zabeležena!');
 
@@ -633,35 +697,35 @@
     const t = transakcije.find(x => x.id === id);
     if (t) {
       t.uneto = !t.uneto;
-      sacuvaj();
+      sacuvajTransakcije();
       renderTransakcije();
       showToast(t.uneto ? 'Označeno kao uneto u blagajnu.' : 'Označeno kao nije uneto.');
     }
   }
 
-  function obrisi(id) {
+  function obrisiTransakciju(id) {
     if (!confirm('Obrisati ovu transakciju?')) return;
     transakcije = transakcije.filter(x => x.id !== id);
-    sacuvaj();
+    sacuvajTransakcije();
     renderTransakcije();
     showToast('Transakcija obrisana.');
   }
 
   function exportCSV() {
     if (!transakcije.length) { showToast('Nema transakcija za izvoz.'); return; }
-    const header = ['Datum', 'Tip', 'Opis', 'Iznos', 'Valuta', 'Iznos (EUR)', 'Napomena', 'Uneto u blagajnu'];
+    const header = ['Datum','Tip','Opis','Iznos','Valuta','Iznos (EUR)','Napomena','Uneto u blagajnu'];
     const rows = transakcije.map(t => [
       formatDatum(t.datum),
       t.tip === 'placanje' ? 'Plaćanje' : 'Naplata',
-      '"' + t.opis.replace(/"/g, '""') + '"',
+      '"' + t.opis.replace(/"/g,'""') + '"',
       t.iznos.toFixed(2),
-      t.valuta || 'RSD',
-      toEUR(t.iznos, t.valuta || 'RSD').toFixed(2),
-      '"' + (t.napomena || '').replace(/"/g, '""') + '"',
+      t.valuta||'RSD',
+      toEUR(t.iznos, t.valuta||'RSD').toFixed(2),
+      '"' + (t.napomena||'').replace(/"/g,'""') + '"',
       t.uneto ? 'Da' : 'Ne'
     ]);
-    const csv = [header, ...rows].map(r => r.join(';')).join('\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const csv = [header,...rows].map(r=>r.join(';')).join('\n');
+    const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -671,111 +735,223 @@
   }
 
   function renderTransakcije() {
-    const filterTip    = document.getElementById('filter-tip').value;
-    const filterStatus = document.getElementById('filter-status').value;
-    const filterValuta = document.getElementById('filter-valuta').value;
+    const fTip    = document.getElementById('filter-tip').value;
+    const fStatus = document.getElementById('filter-status').value;
+    const fVal    = document.getElementById('filter-valuta').value;
 
-    let filtered = transakcije.filter(t => {
-      if (filterTip    !== 'sve' && t.tip !== filterTip) return false;
-      if (filterStatus === 'neuneto' && t.uneto)         return false;
-      if (filterStatus === 'uneto'   && !t.uneto)        return false;
-      const tv = t.valuta || 'RSD';
-      if (filterValuta !== 'sve' && tv !== filterValuta) return false;
+    const filtered = transakcije.filter(t => {
+      if (fTip !== 'sve' && t.tip !== fTip) return false;
+      if (fStatus === 'neuneto' && t.uneto) return false;
+      if (fStatus === 'uneto' && !t.uneto) return false;
+      if (fVal !== 'sve' && (t.valuta||'RSD') !== fVal) return false;
       return true;
     });
 
-    // --- Summary (uvek od SVIH transakcija) ---
-    const kurs = getKurs();
-
-    const sumNaplataEUR  = transakcije.filter(t => t.tip === 'naplata').reduce((s, t) => s + toEUR(t.iznos, t.valuta || 'RSD'), 0);
-    const sumPlacanjeEUR = transakcije.filter(t => t.tip === 'placanje').reduce((s, t) => s + toEUR(t.iznos, t.valuta || 'RSD'), 0);
-
-    // sub-sume po valuti za prikaz
-    const subNaplataRSD = transakcije.filter(t => t.tip === 'naplata'  && (t.valuta||'RSD') === 'RSD').reduce((s,t) => s+t.iznos, 0);
-    const subNaplataEUR2= transakcije.filter(t => t.tip === 'naplata'  && (t.valuta||'RSD') === 'EUR').reduce((s,t) => s+t.iznos, 0);
-    const subPlacRSD    = transakcije.filter(t => t.tip === 'placanje' && (t.valuta||'RSD') === 'RSD').reduce((s,t) => s+t.iznos, 0);
-    const subPlacEUR2   = transakcije.filter(t => t.tip === 'placanje' && (t.valuta||'RSD') === 'EUR').reduce((s,t) => s+t.iznos, 0);
-
-    const brNeuneto      = transakcije.filter(t => !t.uneto).length;
-    const neunetoEUR     = transakcije.filter(t => !t.uneto).reduce((s,t) => s + toEUR(t.iznos, t.valuta||'RSD'), 0);
+    const sumNaplataEUR  = transakcije.filter(t=>t.tip==='naplata').reduce((s,t)=>s+toEUR(t.iznos,t.valuta||'RSD'),0);
+    const sumPlacanjeEUR = transakcije.filter(t=>t.tip==='placanje').reduce((s,t)=>s+toEUR(t.iznos,t.valuta||'RSD'),0);
+    const subNapRSD  = transakcije.filter(t=>t.tip==='naplata'  &&(t.valuta||'RSD')==='RSD').reduce((s,t)=>s+t.iznos,0);
+    const subNapEUR  = transakcije.filter(t=>t.tip==='naplata'  &&(t.valuta||'RSD')==='EUR').reduce((s,t)=>s+t.iznos,0);
+    const subPlacRSD = transakcije.filter(t=>t.tip==='placanje' &&(t.valuta||'RSD')==='RSD').reduce((s,t)=>s+t.iznos,0);
+    const subPlacEUR = transakcije.filter(t=>t.tip==='placanje' &&(t.valuta||'RSD')==='EUR').reduce((s,t)=>s+t.iznos,0);
+    const brNeuneto  = transakcije.filter(t=>!t.uneto).length;
+    const neunetoEUR = transakcije.filter(t=>!t.uneto).reduce((s,t)=>s+toEUR(t.iznos,t.valuta||'RSD'),0);
 
     document.getElementById('sum-naplata').textContent  = fmtEUR(sumNaplataEUR);
     document.getElementById('sum-placanje').textContent = fmtEUR(sumPlacanjeEUR);
-    document.getElementById('sum-neuneto').textContent  = brNeuneto + (brNeuneto === 1 ? ' stavka' : brNeuneto >= 2 && brNeuneto <= 4 ? ' stavke' : ' stavki');
+    document.getElementById('sum-neuneto').textContent  = brNeuneto + (brNeuneto===1?' stavka':brNeuneto>=2&&brNeuneto<=4?' stavke':' stavki');
 
-    // sub linije
-    let subNapSub = [], subPlacSub = [];
-    if (subNaplataRSD > 0) subNapSub.push(fmtRSD(subNaplataRSD));
-    if (subNaplataEUR2 > 0) subNapSub.push(fmtEUR(subNaplataEUR2));
-    if (subPlacRSD > 0) subPlacSub.push(fmtRSD(subPlacRSD));
-    if (subPlacEUR2 > 0) subPlacSub.push(fmtEUR(subPlacEUR2));
+    const napSub=[], placSub=[];
+    if (subNapRSD>0)  napSub.push(fmtRSD(subNapRSD));
+    if (subNapEUR>0)  napSub.push(fmtEUR(subNapEUR));
+    if (subPlacRSD>0) placSub.push(fmtRSD(subPlacRSD));
+    if (subPlacEUR>0) placSub.push(fmtEUR(subPlacEUR));
 
-    document.getElementById('sum-naplata-sub').textContent  = subNapSub.join(' + ') || '';
-    document.getElementById('sum-placanje-sub').textContent = subPlacSub.join(' + ') || '';
-    document.getElementById('sum-neuneto-sub').textContent  = brNeuneto > 0 ? '≈ ' + fmtEUR(neunetoEUR) : '';
+    document.getElementById('sum-naplata-sub').textContent  = napSub.join(' + ');
+    document.getElementById('sum-placanje-sub').textContent = placSub.join(' + ');
+    document.getElementById('sum-neuneto-sub').textContent  = brNeuneto>0 ? '≈ '+fmtEUR(neunetoEUR) : '';
 
-    // --- Lista ---
-    const lista = document.getElementById('lista');
     document.getElementById('transactions-title').textContent = `Transakcije (${filtered.length})`;
 
+    const lista = document.getElementById('lista');
     if (!filtered.length) {
-      lista.innerHTML = `
-        <div class="empty-state">
-          <div class="icon">📋</div>
-          <p>Nema transakcija za prikaz.</p>
-        </div>`;
+      lista.innerHTML = `<div class="empty-state"><div class="icon">📋</div><p>Nema transakcija za prikaz.</p></div>`;
       return;
     }
 
+    const kurs = getKurs();
     lista.innerHTML = filtered.map(t => {
-      const tv = t.valuta || 'RSD';
-      const eurVrednost = toEUR(t.iznos, tv);
-      const sign = t.tip === 'placanje' ? '-' : '+';
-      const eurSub = tv === 'RSD'
-        ? `<span class="transaction-amount-eur">≈ ${fmtEUR(eurVrednost)}</span>`
-        : `<span class="transaction-amount-eur">≈ ${fmtRSD(t.iznos * kurs)}</span>`;
-
+      const tv  = t.valuta||'RSD';
+      const sign = t.tip==='placanje'?'-':'+';
+      const sub  = tv==='RSD' ? fmtEUR(toEUR(t.iznos,tv)) : fmtRSD(t.iznos*kurs);
       return `
-      <div class="transaction-item ${t.tip} ${t.uneto ? 'uneto' : ''}">
-        <div class="transaction-icon">${t.tip === 'placanje' ? '⬆' : '⬇'}</div>
-        <div class="transaction-body">
-          <div class="transaction-top">
-            <div class="transaction-opis">${escHtml(t.opis)}</div>
+      <div class="item-card ${t.tip} ${t.uneto?'zavrseno':''}">
+        <div class="item-icon">${t.tip==='placanje'?'⬆':'⬇'}</div>
+        <div class="item-body">
+          <div class="item-top">
+            <div class="item-name">${escHtml(t.opis)}</div>
             <div class="amount-block">
-              <div class="transaction-amount">${sign}${fmtIznos(t.iznos, tv)}</div>
-              ${eurSub}
+              <div class="item-amount">${sign}${fmtIznos(t.iznos,tv)}</div>
+              <div class="item-amount-sub">≈ ${sub}</div>
             </div>
           </div>
-          <div class="transaction-meta">
+          <div class="item-meta">
             <span class="meta-tag">🕐 ${formatDatum(t.datum)}</span>
             <span class="badge badge-${tv.toLowerCase()}">${tv}</span>
-            ${t.napomena ? `<span class="meta-tag">📝 ${escHtml(t.napomena)}</span>` : ''}
-            <span class="badge ${t.uneto ? 'badge-uneto' : 'badge-neuneto'}">${t.uneto ? '✓ Uneto' : '⏳ Nije uneto'}</span>
+            ${t.napomena?`<span class="meta-tag">📝 ${escHtml(t.napomena)}</span>`:''}
+            <span class="badge ${t.uneto?'badge-uneto':'badge-neuneto'}">${t.uneto?'✓ Uneto':'⏳ Nije uneto'}</span>
           </div>
         </div>
-        <div class="transaction-actions">
-          <button class="btn-uneto ${t.uneto ? 'active' : ''}" onclick="toggleUneto(${t.id})">
-            ${t.uneto ? 'Poništi' : 'Uneto ✓'}
-          </button>
-          <button class="btn-delete" onclick="obrisi(${t.id})">✕</button>
+        <div class="item-actions">
+          <button class="btn-primary ${t.uneto?'active':''}" onclick="toggleUneto(${t.id})">${t.uneto?'Poništi':'Uneto ✓'}</button>
+          <button class="btn-delete" onclick="obrisiTransakciju(${t.id})">✕</button>
         </div>
       </div>`;
     }).join('');
   }
 
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  // ---- DUGOVI ----
+  function setSmer(s) {
+    smer = s;
+    document.getElementById('btn-ja').className   = s==='ja_dugujem'  ? 'active-ja'   : '';
+    document.getElementById('btn-meni').className = s==='meni_duguju' ? 'active-meni' : '';
+    document.getElementById('lbl-ime').textContent = s==='ja_dugujem' ? 'Kome dugujem' : 'Ko meni duguje';
   }
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
+  function setDugValuta(v) {
+    dugValuta = v;
+    document.getElementById('btn-dug-rsd').className = v==='RSD' ? 'active-rsd' : '';
+    document.getElementById('btn-dug-eur').className = v==='EUR' ? 'active-eur' : '';
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && e.ctrlKey) dodajTransakciju();
-  });
+  function sacuvajDugove() { localStorage.setItem(STORAGE_DUG_KEY, JSON.stringify(dugovi)); }
+
+  function dodajDug() {
+    const ime     = document.getElementById('dug-ime').value.trim();
+    const iznos   = parseFloat(document.getElementById('dug-iznos').value);
+    const napomena= document.getElementById('dug-napomena').value.trim();
+
+    if (!ime)              { showToast('Unesite ime osobe.'); return; }
+    if (!iznos || iznos<=0){ showToast('Unesite ispravan iznos.'); return; }
+
+    dugovi.unshift({id: Date.now(), smer, ime, iznos, valuta: dugValuta, napomena, datum: sada(), placeno: false});
+    sacuvajDugove();
+    renderDugovi();
+    showToast(smer==='ja_dugujem' ? `Dug prema ${ime} zabeležen!` : `Potraživanje od ${ime} zabeleženo!`);
+
+    document.getElementById('dug-ime').value = '';
+    document.getElementById('dug-iznos').value = '';
+    document.getElementById('dug-napomena').value = '';
+  }
+
+  function togglePlaceno(id) {
+    const d = dugovi.find(x => x.id===id);
+    if (d) {
+      d.placeno = !d.placeno;
+      sacuvajDugove();
+      renderDugovi();
+      showToast(d.placeno ? 'Označeno kao plaćeno!' : 'Vraćeno kao aktivan dug.');
+    }
+  }
+
+  function obrisiDug(id) {
+    if (!confirm('Obrisati ovaj dug?')) return;
+    dugovi = dugovi.filter(x => x.id!==id);
+    sacuvajDugove();
+    renderDugovi();
+    showToast('Dug obrisan.');
+  }
+
+  function renderDugovi() {
+    const fSmer   = document.getElementById('filter-dug-smer').value;
+    const fStatus = document.getElementById('filter-dug-status').value;
+
+    const filtered = dugovi.filter(d => {
+      if (fSmer !== 'sve' && d.smer !== fSmer) return false;
+      if (fStatus==='aktivni' && d.placeno) return false;
+      if (fStatus==='placeni' && !d.placeno) return false;
+      return true;
+    });
+
+    const aktivni  = dugovi.filter(d=>!d.placeno);
+    const jaDug    = aktivni.filter(d=>d.smer==='ja_dugujem');
+    const meniDug  = aktivni.filter(d=>d.smer==='meni_duguju');
+
+    const jaEUR    = jaDug.reduce((s,d)=>s+toEUR(d.iznos,d.valuta),0);
+    const meniEUR  = meniDug.reduce((s,d)=>s+toEUR(d.iznos,d.valuta),0);
+
+    const jaRSD    = jaDug.filter(d=>d.valuta==='RSD').reduce((s,d)=>s+d.iznos,0);
+    const jaEUR2   = jaDug.filter(d=>d.valuta==='EUR').reduce((s,d)=>s+d.iznos,0);
+    const meniRSD  = meniDug.filter(d=>d.valuta==='RSD').reduce((s,d)=>s+d.iznos,0);
+    const meniEUR2 = meniDug.filter(d=>d.valuta==='EUR').reduce((s,d)=>s+d.iznos,0);
+
+    document.getElementById('sum-ja-dug').textContent   = fmtEUR(jaEUR);
+    document.getElementById('sum-meni-dug').textContent = fmtEUR(meniEUR);
+    document.getElementById('sum-aktivni').textContent  = aktivni.length;
+
+    const jaSub=[], meniSub=[];
+    if (jaRSD>0)    jaSub.push(fmtRSD(jaRSD));
+    if (jaEUR2>0)   jaSub.push(fmtEUR(jaEUR2));
+    if (meniRSD>0)  meniSub.push(fmtRSD(meniRSD));
+    if (meniEUR2>0) meniSub.push(fmtEUR(meniEUR2));
+
+    document.getElementById('sum-ja-dug-sub').textContent   = jaSub.join(' + ');
+    document.getElementById('sum-meni-dug-sub').textContent = meniSub.join(' + ');
+    document.getElementById('sum-aktivni-sub').textContent  = aktivni.length>0 ? `${jaDug.length} ja / ${meniDug.length} meni` : '';
+
+    // badge na tabu
+    const brAkt = aktivni.length;
+    const cnt = document.getElementById('dug-count');
+    cnt.style.display = brAkt>0 ? 'inline-block' : 'none';
+    cnt.textContent = brAkt;
+
+    document.getElementById('dugovi-title').textContent = `Dugovi (${filtered.length})`;
+
+    const lista = document.getElementById('lista-dugovi');
+    if (!filtered.length) {
+      lista.innerHTML = `<div class="empty-state"><div class="icon">🤝</div><p>Nema dugova za prikaz.</p></div>`;
+      return;
+    }
+
+    const kurs = getKurs();
+    lista.innerHTML = filtered.map(d => {
+      const jaD  = d.smer==='ja_dugujem';
+      const cls  = jaD ? 'ja-dugujem' : 'meni-duguje';
+      const icon = jaD ? '⬆' : '⬇';
+      const sign = jaD ? '-' : '+';
+      const tv   = d.valuta||'RSD';
+      const sub  = tv==='RSD' ? fmtEUR(toEUR(d.iznos,tv)) : fmtRSD(d.iznos*kurs);
+
+      return `
+      <div class="item-card ${cls} ${d.placeno?'zavrseno':''}">
+        <div class="item-icon">${icon}</div>
+        <div class="item-body">
+          <div class="item-top">
+            <div class="item-name">${escHtml(d.ime)}</div>
+            <div class="amount-block">
+              <div class="item-amount">${sign}${fmtIznos(d.iznos,tv)}</div>
+              <div class="item-amount-sub">≈ ${sub}</div>
+            </div>
+          </div>
+          <div class="item-meta">
+            <span class="meta-tag">🕐 ${formatDatum(d.datum)}</span>
+            <span class="badge badge-${tv.toLowerCase()}">${tv}</span>
+            <span class="badge ${jaD?'badge-ja':'badge-meni'}">${jaD?'Ja dugujem':'Meni duguju'}</span>
+            ${d.napomena?`<span class="meta-tag">📝 ${escHtml(d.napomena)}</span>`:''}
+            <span class="badge ${d.placeno?'badge-placeno':'badge-aktivan'}">${d.placeno?'✓ Plaćeno':'⏳ Aktivan'}</span>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="btn-primary ${d.placeno?'active':''}" onclick="togglePlaceno(${d.id})">${d.placeno?'Poništi':'Plaćeno ✓'}</button>
+          <button class="btn-delete" onclick="obrisiDug(${d.id})">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
   renderTransakcije();
+  renderDugovi();
 </script>
 </body>
 </html>
