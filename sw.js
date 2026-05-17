@@ -1,5 +1,5 @@
-const CACHE = 'finansije-v1';
-const FILES = ['./index.html', './icon.png', './manifest.json'];
+const CACHE = 'finansije-v3';
+const FILES = ['./', './index.html', './icon.png', './manifest.json'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
@@ -15,6 +15,9 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).catch(() => caches.match('./index.html'));
+    })
   );
 });
