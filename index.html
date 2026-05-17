@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beleška Transakcija</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #2d3748;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #2b6cb0;
+      color: white;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    header span { font-size: 1.6rem; }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+
+    /* FORM */
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+    }
+
+    .form-card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: #4a5568; }
+
+    .type-toggle {
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+      margin-bottom: 14px;
+    }
+
+    .type-toggle button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: white;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .type-toggle button.active-placanje {
+      background: #e53e3e;
+      color: white;
+    }
+
+    .type-toggle button.active-naplata {
+      background: #38a169;
+      color: white;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .form-group label { font-size: 0.82rem; font-weight: 600; color: #718096; }
+
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 9px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: #2b6cb0;
+    }
+
+    .form-group textarea { resize: vertical; min-height: 60px; }
+
+    .btn-add {
+      width: 100%;
+      margin-top: 14px;
+      padding: 11px;
+      background: #2b6cb0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-add:hover { background: #2c5282; }
+
+    /* SUMMARY */
+    .summary {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .summary-card {
+      flex: 1;
+      min-width: 140px;
+      background: white;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      border-left: 4px solid #cbd5e0;
+    }
+
+    .summary-card.naplata { border-left-color: #38a169; }
+    .summary-card.placanje { border-left-color: #e53e3e; }
+    .summary-card.neuneto { border-left-color: #d69e2e; }
+
+    .summary-card .label { font-size: 0.78rem; font-weight: 600; color: #718096; margin-bottom: 4px; }
+    .summary-card .amount { font-size: 1.3rem; font-weight: 700; }
+    .summary-card.naplata .amount { color: #276749; }
+    .summary-card.placanje .amount { color: #c53030; }
+    .summary-card.neuneto .amount { color: #b7791f; }
+
+    /* FILTER */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-bar select, .filter-bar input {
+      padding: 7px 10px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      outline: none;
+      background: white;
+    }
+
+    .filter-bar select:focus, .filter-bar input:focus { border-color: #2b6cb0; }
+
+    .filter-label { font-size: 0.82rem; color: #718096; font-weight: 600; }
+
+    /* TRANSACTIONS */
+    .transactions-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .transactions-header h2 { font-size: 1rem; font-weight: 600; color: #4a5568; }
+
+    .btn-export {
+      padding: 6px 14px;
+      background: #e2e8f0;
+      color: #4a5568;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-export:hover { background: #cbd5e0; }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #a0aec0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
+
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .empty-state p { font-size: 0.95rem; }
+
+    .transaction-item {
+      background: white;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border-left: 4px solid #cbd5e0;
+      transition: opacity 0.2s;
+    }
+
+    .transaction-item.naplata { border-left-color: #38a169; }
+    .transaction-item.placanje { border-left-color: #e53e3e; }
+    .transaction-item.uneto { opacity: 0.55; }
+
+    .transaction-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+
+    .transaction-body { flex: 1; min-width: 0; }
+
+    .transaction-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .transaction-opis {
+      font-weight: 600;
+      font-size: 0.97rem;
+      word-break: break-word;
+    }
+
+    .transaction-amount {
+      font-size: 1.1rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .naplata .transaction-amount { color: #276749; }
+    .placanje .transaction-amount { color: #c53030; }
+
+    .transaction-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+
+    .meta-tag {
+      font-size: 0.75rem;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .badge-neuneto { background: #fefcbf; color: #b7791f; }
+    .badge-uneto { background: #c6f6d5; color: #276749; }
+
+    .transaction-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .btn-uneto {
+      padding: 4px 10px;
+      border: 1.5px solid #38a169;
+      background: white;
+      color: #38a169;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-uneto:hover { background: #38a169; color: white; }
+    .btn-uneto.active { background: #38a169; color: white; }
+
+    .btn-delete {
+      padding: 4px 8px;
+      border: 1.5px solid #e2e8f0;
+      background: white;
+      color: #a0aec0;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-delete:hover { border-color: #e53e3e; color: #e53e3e; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #2d3748;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 999;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 480px) {
+      .form-row { flex-direction: column; }
+      .summary { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span>💰</span>
+  <h1>Beleška Transakcija</h1>
+</header>
+
+<div class="container">
+
+  <!-- FORMA -->
+  <div class="form-card">
+    <h2>Nova transakcija</h2>
+
+    <div class="type-toggle">
+      <button id="btn-placanje" class="active-placanje" onclick="setType('placanje')">
+        ⬆ Plaćanje
+      </button>
+      <button id="btn-naplata" onclick="setType('naplata')">
+        ⬇ Naplata od kupca
+      </button>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group" style="flex: 2; min-width: 200px;">
+        <label>Opis</label>
+        <textarea id="opis" placeholder="Šta je plaćeno / od koga naplaćeno..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Iznos (RSD)</label>
+        <input type="number" id="iznos" placeholder="0.00" min="0" step="0.01" />
+      </div>
+    </div>
+
+    <div class="form-row" style="margin-top: 10px;">
+      <div class="form-group">
+        <label>Datum i vreme</label>
+        <input type="datetime-local" id="datum" />
+      </div>
+      <div class="form-group">
+        <label>Napomena (opciono)</label>
+        <input type="text" id="napomena" placeholder="Dodatna napomena..." />
+      </div>
+    </div>
+
+    <button class="btn-add" onclick="dodajTransakciju()">+ Dodaj transakciju</button>
+  </div>
+
+  <!-- SUMARNI PRIKAZ -->
+  <div class="summary">
+    <div class="summary-card naplata">
+      <div class="label">Ukupno naplaćeno</div>
+      <div class="amount" id="sum-naplata">0,00 RSD</div>
+    </div>
+    <div class="summary-card placanje">
+      <div class="label">Ukupno plaćeno</div>
+      <div class="amount" id="sum-placanje">0,00 RSD</div>
+    </div>
+    <div class="summary-card neuneto">
+      <div class="label">Nije uneto u blagajnu</div>
+      <div class="amount" id="sum-neuneto">0 stavki</div>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <select id="filter-tip" onchange="renderTransakcije()">
+      <option value="sve">Sve transakcije</option>
+      <option value="placanje">Samo plaćanja</option>
+      <option value="naplata">Samo naplate</option>
+    </select>
+    <select id="filter-status" onchange="renderTransakcije()">
+      <option value="sve">Sve stavke</option>
+      <option value="neuneto">Nije uneto u blagajnu</option>
+      <option value="uneto">Uneto u blagajnu</option>
+    </select>
+  </div>
+
+  <!-- LISTA -->
+  <div class="transactions-header">
+    <h2 id="transactions-title">Transakcije</h2>
+    <button class="btn-export" onclick="exportCSV()">Izvezi CSV</button>
+  </div>
+
+  <div id="lista"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'finansije_transakcije';
+  let tip = 'placanje';
+  let transakcije = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+  function setType(t) {
+    tip = t;
+    document.getElementById('btn-placanje').className = t === 'placanje' ? 'active-placanje' : '';
+    document.getElementById('btn-naplata').className = t === 'naplata' ? 'active-naplata' : '';
+  }
+
+  function sada() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  document.getElementById('datum').value = sada();
+
+  function formatBroj(n) {
+    return n.toLocaleString('sr-RS', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' RSD';
+  }
+
+  function formatDatum(iso) {
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2, '0');
+    return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function sacuvaj() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(transakcije));
+  }
+
+  function dodajTransakciju() {
+    const opis = document.getElementById('opis').value.trim();
+    const iznos = parseFloat(document.getElementById('iznos').value);
+    const datum = document.getElementById('datum').value;
+    const napomena = document.getElementById('napomena').value.trim();
+
+    if (!opis) { showToast('Unesite opis transakcije.'); return; }
+    if (!iznos || iznos <= 0) { showToast('Unesite ispravan iznos.'); return; }
+    if (!datum) { showToast('Unesite datum i vreme.'); return; }
+
+    transakcije.unshift({
+      id: Date.now(),
+      tip,
+      opis,
+      iznos,
+      datum,
+      napomena,
+      uneto: false
+    });
+
+    sacuvaj();
+    renderTransakcije();
+    showToast(tip === 'placanje' ? 'Plaćanje zabeleženo!' : 'Naplata zabeležena!');
+
+    document.getElementById('opis').value = '';
+    document.getElementById('iznos').value = '';
+    document.getElementById('napomena').value = '';
+    document.getElementById('datum').value = sada();
+  }
+
+  function toggleUneto(id) {
+    const t = transakcije.find(x => x.id === id);
+    if (t) {
+      t.uneto = !t.uneto;
+      sacuvaj();
+      renderTransakcije();
+      showToast(t.uneto ? 'Označeno kao uneto u blagajnu.' : 'Označeno kao nije uneto.');
+    }
+  }
+
+  function obrisi(id) {
+    if (!confirm('Obrisati ovu transakciju?')) return;
+    transakcije = transakcije.filter(x => x.id !== id);
+    sacuvaj();
+    renderTransakcije();
+    showToast('Transakcija obrisana.');
+  }
+
+  function exportCSV() {
+    if (!transakcije.length) { showToast('Nema transakcija za izvoz.'); return; }
+    const header = ['Datum', 'Tip', 'Opis', 'Iznos (RSD)', 'Napomena', 'Uneto u blagajnu'];
+    const rows = transakcije.map(t => [
+      formatDatum(t.datum),
+      t.tip === 'placanje' ? 'Plaćanje' : 'Naplata',
+      '"' + t.opis.replace(/"/g, '""') + '"',
+      t.iznos.toFixed(2),
+      '"' + (t.napomena || '').replace(/"/g, '""') + '"',
+      t.uneto ? 'Da' : 'Ne'
+    ]);
+    const csv = [header, ...rows].map(r => r.join(';')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transakcije_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function renderTransakcije() {
+    const filterTip = document.getElementById('filter-tip').value;
+    const filterStatus = document.getElementById('filter-status').value;
+
+    let filtered = transakcije.filter(t => {
+      if (filterTip !== 'sve' && t.tip !== filterTip) return false;
+      if (filterStatus === 'neuneto' && t.uneto) return false;
+      if (filterStatus === 'uneto' && !t.uneto) return false;
+      return true;
+    });
+
+    // Summary (uvek od svih)
+    const sumNaplata = transakcije.filter(t => t.tip === 'naplata').reduce((s, t) => s + t.iznos, 0);
+    const sumPlacanje = transakcije.filter(t => t.tip === 'placanje').reduce((s, t) => s + t.iznos, 0);
+    const brNeuneto = transakcije.filter(t => !t.uneto).length;
+
+    document.getElementById('sum-naplata').textContent = formatBroj(sumNaplata);
+    document.getElementById('sum-placanje').textContent = formatBroj(sumPlacanje);
+    document.getElementById('sum-neuneto').textContent = brNeuneto + (brNeuneto === 1 ? ' stavka' : brNeuneto >= 2 && brNeuneto <= 4 ? ' stavke' : ' stavki');
+
+    const lista = document.getElementById('lista');
+    document.getElementById('transactions-title').textContent = `Transakcije (${filtered.length})`;
+
+    if (!filtered.length) {
+      lista.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">📋</div>
+          <p>Nema transakcija za prikaz.</p>
+        </div>`;
+      return;
+    }
+
+    lista.innerHTML = filtered.map(t => `
+      <div class="transaction-item ${t.tip} ${t.uneto ? 'uneto' : ''}">
+        <div class="transaction-icon">${t.tip === 'placanje' ? '⬆' : '⬇'}</div>
+        <div class="transaction-body">
+          <div class="transaction-top">
+            <div class="transaction-opis">${escHtml(t.opis)}</div>
+            <div class="transaction-amount">${t.tip === 'placanje' ? '-' : '+'}${formatBroj(t.iznos)}</div>
+          </div>
+          <div class="transaction-meta">
+            <span class="meta-tag">🕐 ${formatDatum(t.datum)}</span>
+            ${t.napomena ? `<span class="meta-tag">📝 ${escHtml(t.napomena)}</span>` : ''}
+            <span class="badge ${t.uneto ? 'badge-uneto' : 'badge-neuneto'}">${t.uneto ? '✓ Uneto' : '⏳ Nije uneto'}</span>
+          </div>
+        </div>
+        <div class="transaction-actions">
+          <button class="btn-uneto ${t.uneto ? 'active' : ''}" onclick="toggleUneto(${t.id})">
+            ${t.uneto ? 'Poništi' : 'Uneto ✓'}
+          </button>
+          <button class="btn-delete" onclick="obrisi(${t.id})">✕</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Enter u formi
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.ctrlKey) dodajTransakciju();
+  });
+
+  renderTransakcije();
+</script>
+</body>
+</html>
