@@ -1,0 +1,15 @@
+{
+  "name": "Beleška Transakcija",
+  "short_name": "Finansije",
+  "description": "Beleži plaćanja i naplate pre unosa u blagajnu",
+  "start_url": "/finansije/",
+  "scope": "/finansije/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f0f4f8",
+  "theme_color": "#2b6cb0",
+  "icons": [
+    { "src": "icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
