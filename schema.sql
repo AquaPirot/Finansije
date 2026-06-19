@@ -35,8 +35,12 @@ CREATE TABLE IF NOT EXISTS podesavanja (
   vrednost VARCHAR(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Pocetne vrednosti: kurs i pocetno stanje -104.635 EUR
+-- Pocetne vrednosti: kurs i pocetno stanje 0 (pozajmica se vodi kao transakcija)
 INSERT INTO podesavanja (kljuc, vrednost) VALUES
   ('kurs', '117.20'),
-  ('pocetno_stanje_eur', '-104635')
+  ('pocetno_stanje_eur', '0')
 ON DUPLICATE KEY UPDATE vrednost = vrednost;
+
+-- Prva transakcija: pozajmica (Aca) 104.635 EUR
+INSERT INTO transakcije (tip, opis, iznos, valuta, kategorija, datum, napomena, uneo)
+VALUES ('trosak', 'Pozajmica', 104635.00, 'EUR', 'Pozajmica', '2024-01-01 00:00:00', '', 'Aleksandar');
