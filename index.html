@@ -651,6 +651,10 @@ function showApp() {
 // ---------- HELPERS ----------
 function getKurs() { return parseFloat(DATA.podesavanja.kurs) || 117.2; }
 function getPocetno() { return parseFloat(DATA.podesavanja.pocetno_stanje_eur) || 0; }
+function getPocPoz(osoba) {
+  const key = osoba === 'Aleksandar' ? 'poc_poz_aleksandar' : 'poc_poz_daniel';
+  return parseFloat(DATA.podesavanja[key]) || 0;
+}
 function toEUR(iznos, v) { return v === 'EUR' ? iznos : iznos / getKurs(); }
 
 function fmt(n, suffix) {
@@ -695,7 +699,6 @@ async function loadData() {
   try {
     DATA = await api('data');
     document.getElementById('kurs').value = getKurs();
-    document.getElementById('pocetno-info').textContent = 'Početno stanje: ' + fmtEUR(getPocetno());
     buildMesecFilter();
     renderAll();
   } catch (e) { showToast(e.message, true); }
@@ -719,7 +722,7 @@ function renderSummary() {
   const mesecSada = new Date().toISOString().slice(0, 7);
   let blagajna = 0;
   let prilivTotal = 0, trosakTotal = 0, prilivM = 0, trosakM = 0;
-  let pozAca = 0, pozDaniel = 0;
+  let pozAca = getPocPoz('Aleksandar'), pozDaniel = getPocPoz('Daniel');
 
   for (const t of DATA.transakcije) {
     const eur = toEUR(parseFloat(t.iznos), t.valuta);

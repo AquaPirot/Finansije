@@ -175,7 +175,7 @@ try {
             requireAuth();
             $kljuc = $in['kljuc'] ?? '';
             $vrednost = trim((string)($in['vrednost'] ?? ''));
-            if (!in_array($kljuc, ['kurs', 'pocetno_stanje_eur'], true)) out(['error' => 'Nepoznato podešavanje.'], 400);
+            if (!in_array($kljuc, ['kurs', 'pocetno_stanje_eur', 'poc_poz_aleksandar', 'poc_poz_daniel'], true)) out(['error' => 'Nepoznato podešavanje.'], 400);
             if ($vrednost === '' || !is_numeric($vrednost)) out(['error' => 'Neispravna vrednost.'], 400);
             $st = db()->prepare('INSERT INTO podesavanja (kljuc, vrednost) VALUES (?,?) ON DUPLICATE KEY UPDATE vrednost=?');
             $st->execute([$kljuc, $vrednost, $vrednost]);
