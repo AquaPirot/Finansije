@@ -5,7 +5,7 @@
 
 CREATE TABLE IF NOT EXISTS transakcije (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  tip ENUM('trosak','priliv') NOT NULL,
+  tip ENUM('trosak','priliv','pozajmica','povracaj') NOT NULL,
   opis VARCHAR(500) NOT NULL,
   iznos DECIMAL(14,2) NOT NULL,
   valuta ENUM('RSD','EUR') NOT NULL DEFAULT 'RSD',
@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS transakcije (
   datum DATETIME NOT NULL,
   napomena VARCHAR(500) NOT NULL DEFAULT '',
   uneo VARCHAR(30) NOT NULL,
+  pozajmilac VARCHAR(30) NOT NULL DEFAULT '',
+  izvor VARCHAR(20) NOT NULL DEFAULT '',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

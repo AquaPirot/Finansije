@@ -90,15 +90,18 @@ try {
             $kategorija = trim((string)($in['kategorija'] ?? 'Ostalo'));
             $datum = $in['datum'] ?? '';
             $napomena = trim((string)($in['napomena'] ?? ''));
+            $pozajmilac = trim((string)($in['pozajmilac'] ?? ''));
+            $izvor = trim((string)($in['izvor'] ?? ''));
 
-            if (!in_array($tip, ['trosak', 'priliv'], true)) out(['error' => 'Neispravan tip.'], 400);
+            if (!in_array($tip, ['trosak', 'priliv', 'pozajmica', 'povracaj'], true)) out(['error' => 'Neispravan tip.'], 400);
             if ($opis === '') out(['error' => 'Unesite opis.'], 400);
             if ($iznos <= 0) out(['error' => 'Unesite ispravan iznos.'], 400);
             if (!in_array($valuta, ['RSD', 'EUR'], true)) out(['error' => 'Neispravna valuta.'], 400);
             if ($datum === '') out(['error' => 'Unesite datum.'], 400);
+            if (in_array($tip, ['pozajmica', 'povracaj'], true) && !in_array($pozajmilac, ['Aleksandar', 'Daniel'], true)) out(['error' => 'Odaberite ko pozajmljuje.'], 400);
 
-            $st = db()->prepare('INSERT INTO transakcije (tip, opis, iznos, valuta, kategorija, datum, napomena, uneo) VALUES (?,?,?,?,?,?,?,?)');
-            $st->execute([$tip, $opis, $iznos, $valuta, $kategorija, str_replace('T', ' ', $datum), $napomena, $user]);
+            $st = db()->prepare('INSERT INTO transakcije (tip, opis, iznos, valuta, kategorija, datum, napomena, uneo, pozajmilac, izvor) VALUES (?,?,?,?,?,?,?,?,?,?)');
+            $st->execute([$tip, $opis, $iznos, $valuta, $kategorija, str_replace('T', ' ', $datum), $napomena, $user, $pozajmilac, $izvor]);
             out(['ok' => true, 'id' => db()->lastInsertId()]);
         }
 
@@ -112,13 +115,15 @@ try {
             $kategorija = trim((string)($in['kategorija'] ?? 'Ostalo'));
             $datum = $in['datum'] ?? '';
             $napomena = trim((string)($in['napomena'] ?? ''));
+            $pozajmilac = trim((string)($in['pozajmilac'] ?? ''));
+            $izvor = trim((string)($in['izvor'] ?? ''));
 
             if ($id <= 0) out(['error' => 'Neispravan ID.'], 400);
-            if (!in_array($tip, ['trosak', 'priliv'], true)) out(['error' => 'Neispravan tip.'], 400);
+            if (!in_array($tip, ['trosak', 'priliv', 'pozajmica', 'povracaj'], true)) out(['error' => 'Neispravan tip.'], 400);
             if ($opis === '' || $iznos <= 0 || $datum === '') out(['error' => 'Popunite sva obavezna polja.'], 400);
 
-            $st = db()->prepare('UPDATE transakcije SET tip=?, opis=?, iznos=?, valuta=?, kategorija=?, datum=?, napomena=? WHERE id=?');
-            $st->execute([$tip, $opis, $iznos, $valuta, $kategorija, str_replace('T', ' ', $datum), $napomena, $id]);
+            $st = db()->prepare('UPDATE transakcije SET tip=?, opis=?, iznos=?, valuta=?, kategorija=?, datum=?, napomena=?, pozajmilac=?, izvor=? WHERE id=?');
+            $st->execute([$tip, $opis, $iznos, $valuta, $kategorija, str_replace('T', ' ', $datum), $napomena, $pozajmilac, $izvor, $id]);
             out(['ok' => true]);
         }
 
