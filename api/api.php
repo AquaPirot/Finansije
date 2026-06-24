@@ -99,6 +99,7 @@ try {
             if (!in_array($valuta, ['RSD', 'EUR'], true)) out(['error' => 'Neispravna valuta.'], 400);
             if ($datum === '') out(['error' => 'Unesite datum.'], 400);
             if (in_array($tip, ['pozajmica', 'povracaj'], true) && !in_array($pozajmilac, ['Aleksandar', 'Daniel'], true)) out(['error' => 'Odaberite ko pozajmljuje.'], 400);
+            if ($tip === 'trosak' && $izvor === 'pozajmica' && !in_array($pozajmilac, ['Aleksandar', 'Daniel'], true)) out(['error' => 'Odaberite ko plaća iz pozajmice.'], 400);
 
             $st = db()->prepare('INSERT INTO transakcije (tip, opis, iznos, valuta, kategorija, datum, napomena, uneo, pozajmilac, izvor) VALUES (?,?,?,?,?,?,?,?,?,?)');
             $st->execute([$tip, $opis, $iznos, $valuta, $kategorija, str_replace('T', ' ', $datum), $napomena, $user, $pozajmilac, $izvor]);
@@ -121,6 +122,8 @@ try {
             if ($id <= 0) out(['error' => 'Neispravan ID.'], 400);
             if (!in_array($tip, ['trosak', 'priliv', 'pozajmica', 'povracaj'], true)) out(['error' => 'Neispravan tip.'], 400);
             if ($opis === '' || $iznos <= 0 || $datum === '') out(['error' => 'Popunite sva obavezna polja.'], 400);
+            if (in_array($tip, ['pozajmica', 'povracaj'], true) && !in_array($pozajmilac, ['Aleksandar', 'Daniel'], true)) out(['error' => 'Odaberite ko pozajmljuje.'], 400);
+            if ($tip === 'trosak' && $izvor === 'pozajmica' && !in_array($pozajmilac, ['Aleksandar', 'Daniel'], true)) out(['error' => 'Odaberite ko plaća iz pozajmice.'], 400);
 
             $st = db()->prepare('UPDATE transakcije SET tip=?, opis=?, iznos=?, valuta=?, kategorija=?, datum=?, napomena=?, pozajmilac=?, izvor=? WHERE id=?');
             $st->execute([$tip, $opis, $iznos, $valuta, $kategorija, str_replace('T', ' ', $datum), $napomena, $pozajmilac, $izvor, $id]);

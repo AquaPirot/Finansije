@@ -492,7 +492,7 @@
         </div>
         <div class="form-row">
           <div class="fg" id="fg-pozajmilac" style="display:none;">
-            <label>Ko pozajmljuje / kome vraćamo</label>
+            <label>Ko pozajmljuje / plaća / kome vraćamo</label>
             <select id="t-pozajmilac">
               <option value="Aleksandar">Aleksandar</option>
               <option value="Daniel">Daniel</option>
@@ -500,10 +500,10 @@
           </div>
           <div class="fg" id="fg-izvor" style="display:none;">
             <label>Izvor plaćanja (opciono)</label>
-            <select id="t-izvor">
+            <select id="t-izvor" onchange="updatePozajmilacVis()">
               <option value="">Nije navedeno</option>
-              <option value="prihod">Iz prihoda</option>
-              <option value="pozajmica">Iz pozajmice</option>
+              <option value="prihod">Iz prihoda (blagajne)</option>
+              <option value="pozajmica">Iz pozajmice (lično)</option>
             </select>
           </div>
         </div>
@@ -731,8 +731,15 @@ function renderSummary() {
       blagajna += eur; prilivTotal += eur;
       if (m === mesecSada) prilivM += eur;
     } else if (t.tip === 'trosak') {
-      blagajna -= eur; trosakTotal += eur;
+      trosakTotal += eur;
       if (m === mesecSada) trosakM += eur;
+      if (t.izvor === 'pozajmica') {
+        // Plaćeno iz lične pozajmice: ne dira blagajnu, povećava dati dug osobe
+        if (t.pozajmilac === 'Aleksandar') pozAca += eur;
+        else if (t.pozajmilac === 'Daniel') pozDaniel += eur;
+      } else {
+        blagajna -= eur;
+      }
     } else if (t.tip === 'pozajmica') {
       blagajna += eur;
       if (t.pozajmilac === 'Aleksandar') pozAca += eur;
@@ -787,8 +794,15 @@ function setTip(t) {
   document.getElementById('bt-priliv').className = t === 'priliv' ? 'on-green' : '';
   document.getElementById('bt-pozajmica').className = t === 'pozajmica' ? 'on-blue' : '';
   document.getElementById('bt-povracaj').className = t === 'povracaj' ? 'on-amber' : '';
-  document.getElementById('fg-pozajmilac').style.display = (t === 'pozajmica' || t === 'povracaj') ? 'flex' : 'none';
   document.getElementById('fg-izvor').style.display = t === 'trosak' ? 'flex' : 'none';
+  updatePozajmilacVis();
+}
+// Prikazuje "ko" polje za pozajmicu/povraćaj, ili za trošak plaćen iz lične pozajmice
+function updatePozajmilacVis() {
+  const izvor = document.getElementById('t-izvor').value;
+  const show = (tip === 'pozajmica' || tip === 'povracaj') ||
+               (tip === 'trosak' && izvor === 'pozajmica');
+  document.getElementById('fg-pozajmilac').style.display = show ? 'flex' : 'none';
 }
 function setValuta(v) {
   valuta = v;
@@ -805,9 +819,11 @@ async function saveTrans() {
     kategorija: document.getElementById('t-kategorija').value,
     datum: document.getElementById('t-datum').value,
     napomena: document.getElementById('t-napomena').value.trim(),
-    pozajmilac: (tip === 'pozajmica' || tip === 'povracaj') ? document.getElementById('t-pozajmilac').value : '',
     izvor: tip === 'trosak' ? document.getElementById('t-izvor').value : ''
   };
+  const trebaKo = (tip === 'pozajmica' || tip === 'povracaj') ||
+                  (tip === 'trosak' && payload.izvor === 'pozajmica');
+  payload.pozajmilac = trebaKo ? document.getElementById('t-pozajmilac').value : '';
   if (!payload.opis) { showToast('Unesite opis.', true); return; }
   if (!payload.iznos || payload.iznos <= 0) { showToast('Unesite ispravan iznos.', true); return; }
   if (!payload.datum) { showToast('Unesite datum.', true); return; }
@@ -848,6 +864,7 @@ function editTrans(id) {
   document.getElementById('t-napomena').value = t.napomena || '';
   document.getElementById('t-pozajmilac').value = t.pozajmilac || 'Aleksandar';
   document.getElementById('t-izvor').value = t.izvor || '';
+  updatePozajmilacVis();
   document.getElementById('trans-form-title').textContent = '✏️ Izmena transakcije';
   document.getElementById('btn-save-trans').textContent = 'Sačuvaj izmene';
   document.getElementById('btn-cancel-edit').style.display = 'block';
@@ -921,7 +938,7 @@ function renderTrans() {
     const sub = t.valuta === 'RSD' ? '≈ ' + fmtEUR(toEUR(iznos, 'RSD')) : '≈ ' + fmtRSD(iznos * getKurs());
     const izvorBadge = t.izvor === 'prihod' ? `<span class="badge izvor-prihod">Iz prihoda</span>` :
                        t.izvor === 'pozajmica' ? `<span class="badge izvor-pozajmica">Iz pozajmice</span>` : '';
-    const pozajmilacBadge = (t.tip === 'pozajmica' || t.tip === 'povracaj') && t.pozajmilac
+    const pozajmilacBadge = ((t.tip === 'pozajmica' || t.tip === 'povracaj') || (t.tip === 'trosak' && t.izvor === 'pozajmica')) && t.pozajmilac
       ? `<span class="badge ${esc(t.pozajmilac)}">${esc(t.pozajmilac)}</span>` : '';
     const uneoBadge = (t.tip !== 'pozajmica' && t.tip !== 'povracaj')
       ? `<span class="badge ${esc(t.uneo)}">${esc(t.uneo)}</span>` : '';
