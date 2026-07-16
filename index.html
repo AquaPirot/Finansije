@@ -973,15 +973,18 @@ function renderTrans() {
 function exportTransCSV() {
   const items = filteredTrans();
   if (!items.length) { showToast('Nema podataka za izvoz.', true); return; }
-  const header = ['Datum','Tip','Opis','Iznos','Valuta','Iznos (EUR)','Kategorija','Uneo','Napomena'];
+  const header = ['Datum','Tip','Opis','Iznos','Valuta','Iznos (EUR)','Kategorija','Pozajmilac','Izvor','Uneo','Napomena'];
+  const tipNaziv = { trosak: 'Trošak', priliv: 'Priliv', pozajmica: 'Pozajmica', povracaj: 'Povraćaj' };
   const rows = items.map(t => [
     fmtDatum(t.datum),
-    t.tip === 'trosak' ? 'Trošak' : 'Priliv',
+    tipNaziv[t.tip] || t.tip,
     '"' + t.opis.replace(/"/g, '""') + '"',
     parseFloat(t.iznos).toFixed(2),
     t.valuta,
     toEUR(parseFloat(t.iznos), t.valuta).toFixed(2),
     t.kategorija,
+    t.pozajmilac || '',
+    t.izvor === 'pozajmica' ? 'Iz pozajmice' : t.izvor === 'prihod' ? 'Iz prihoda' : '',
     t.uneo,
     '"' + (t.napomena || '').replace(/"/g, '""') + '"'
   ]);
